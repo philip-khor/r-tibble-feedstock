@@ -25,7 +25,7 @@ build:
 requirements:
   build:
     - r-base
-    - r-rcpp
+    - r-rcpp >=0.12.3
     - r-rlang
     - r-lazyeval >=0.1.10
     - posix                # [win]
@@ -34,10 +34,9 @@ requirements:
 
   run:
     - r-base
-    - r-rcpp
+    - r-rcpp >=0.12.3
     - r-rlang
-    - r-lazyeval >=0.1.10
-    - libgcc
+    - libgcc  # [not win]
 
 test:
   commands:
