@@ -26,6 +26,7 @@ requirements:
   build:
     - r-base
     - r-rcpp
+    - r-rlang
     - r-lazyeval >=0.1.10
     - posix                # [win]
     - {{native}}toolchain  # [win]
@@ -34,7 +35,9 @@ requirements:
   run:
     - r-base
     - r-rcpp
+    - r-rlang
     - r-lazyeval >=0.1.10
+    - libgcc
 
 test:
   commands:
