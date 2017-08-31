@@ -1,4 +1,4 @@
-{% set version = '1.3.0' %}
+{% set version = '1.3.3' %}
 
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
@@ -12,7 +12,7 @@ source:
   url:
     - https://cran.r-project.org/src/contrib/tibble_{{ version }}.tar.gz
     - https://cran.r-project.org/src/contrib/Archive/tibble/tibble_{{ version }}.tar.gz
-  sha256: 738987288a3ad9070ca9ca2f36ed47287041c21f4d1e4e4733bae2b1598845e0
+  sha256: 802ec8346eae2397a2fc64b254cf80a67c7832cb5211328336f45053ea2518ae
 
 build:
   number: 0
@@ -25,7 +25,8 @@ build:
 requirements:
   build:
     - r-base
-    - r-rcpp
+    - r-rcpp >=0.12.3
+    - r-rlang
     - r-lazyeval >=0.1.10
     - posix                # [win]
     - {{native}}toolchain  # [win]
@@ -33,8 +34,9 @@ requirements:
 
   run:
     - r-base
-    - r-rcpp
-    - r-lazyeval >=0.1.10
+    - r-rcpp >=0.12.3
+    - r-rlang
+    - libgcc  # [not win]
 
 test:
   commands:
