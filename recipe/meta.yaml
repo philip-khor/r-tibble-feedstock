@@ -1,5 +1,4 @@
 {% set version = '1.4.2' %}
-
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -10,33 +9,38 @@ package:
 source:
   fn: tibble_{{ version }}.tar.gz
   url:
-    - https://cran.r-project.org/src/contrib/tibble_{{ version }}.tar.gz
-    - https://cran.r-project.org/src/contrib/Archive/tibble/tibble_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/tibble_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/Archive/tibble/tibble_{{ version }}.tar.gz
   sha256: 11670353ff7059a55066dd075d1534d6a27bc5c3583fb9bc291bf750a75c5b17
 
 build:
   merge_build_host: True  # [win]
-  number: 1
+  number: 2
   skip: true  # [win32]
-
   rpaths:
     - lib/R/lib/
     - lib/
 
 requirements:
   build:
-    - posix                # [win]
-    - {{ compiler('c') }}        # [unix]
-    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('c') }}        # [not win]
+    - {{native}}toolchain        # [win]
+    - {{posix}}filesystem        # [win]
+    - {{posix}}make
+    - {{posix}}sed  # [win]
+    - {{posix}}coreutils  # [win]
+    - {{posix}}sed               # [win]
+    - {{posix}}coreutils         # [win]
+    - {{posix}}zip               # [win]
   host:
     - r-base
     - r-cli
     - r-crayon
     - r-pillar >=1.1.0
     - r-rlang
-
   run:
     - r-base
+    - {{native}}gcc-libs         # [win]
     - r-cli
     - r-crayon
     - r-pillar >=1.1.0
@@ -44,17 +48,20 @@ requirements:
 
 test:
   commands:
-    - $R -e "library('tibble')"  # [not win]
+    - $R -e "library('tibble')"           # [not win]
     - "\"%R%\" -e \"library('tibble')\""  # [win]
 
 about:
-  home: https://github.com/tidyverse/tibble
+  home: http://tibble.tidyverse.org/, https://github.com/tidyverse/tibble
   license: MIT
-  summary: Provides a 'tbl_df' class that offers better checking and printing capabilities than
-    traditional data frames.
+  summary: Provides a 'tbl_df' class (the 'tibble') that provides stricter checking and better
+    formatting than the traditional data frame.
   license_family: MIT
 
 extra:
   recipe-maintainers:
     - johanneskoester
     - bgruening
+    - daler
+    - jdblischak
+    - cbrueffer
